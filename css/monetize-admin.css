@@ -1,0 +1,37 @@
+table#monetize-filter{
+    width: 100%;
+    margin-bottom: 10px;
+    table-layout: fixed;
+}
+
+table#monetize-filter td.monetize-filter-label{
+    text-align: right;
+    font-weight: bold;
+}
+
+table#monetize-filter td.monetize-filter-input{
+    text-align: center;
+}
+
+table#monetize-filter td.monetize-filter-input input {
+    background-color: #FFF;
+}
+
+textarea#monetize-unit-html{
+    resize: vertical;
+}
+
+.monetize-unit-media-open span.wp-media-buttons-icon {
+    background: url("../../../../wp-admin/images/media-button.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    height: 16px;
+    margin: 0 2px;
+    vertical-align: text-top;
+    width: 16px;
+}
+
+div.monetize-charts{
+    margin: 0 auto;
+    width: 640px;
+    height: 480px;
+}

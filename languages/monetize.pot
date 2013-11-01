@@ -1,0 +1,176 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Monetize 1.00\n"
+"POT-Creation-Date: 2013-11-01 14:12+0100\n"
+"PO-Revision-Date: 2013-11-01 14:12+0100\n"
+"Last-Translator: \n"
+"Language-Team: Marko Martinović\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../monetize.php:1169
+msgid "Zones"
+msgstr ""
+
+#: ../monetize.php:1170 ../monetize.php:1295
+msgid "Add New"
+msgstr ""
+
+#: ../monetize.php:1193
+msgid "Impressions Trends"
+msgstr ""
+
+#: ../monetize.php:1210
+msgid "Clicks Trends"
+msgstr ""
+
+#: ../monetize.php:1227
+msgid "Impressions"
+msgstr ""
+
+#: ../monetize.php:1244
+msgid "Clicks"
+msgstr ""
+
+#: ../monetize.php:1293
+msgid "Units"
+msgstr ""
+
+#: ../monetize.php:1715
+msgid "Edit Unit"
+msgstr ""
+
+#: ../monetize.php:1724
+msgid "Edit Zone"
+msgstr ""
+
+#: ../monetize.php:1864 ../monetize.php:2120
+msgid "Name"
+msgstr ""
+
+#: ../monetize.php:1864 ../monetize.php:1872 ../monetize.php:1880
+#: ../monetize.php:2081 ../monetize.php:2103 ../monetize.php:2120
+#: ../monetize.php:2130 ../monetize.php:2140
+msgid "required"
+msgstr ""
+
+#: ../monetize.php:1872
+msgid "Width in pixels"
+msgstr ""
+
+#: ../monetize.php:1880
+msgid "Height in pixels"
+msgstr ""
+
+#: ../monetize.php:1888
+msgid "CSS"
+msgstr ""
+
+#: ../monetize.php:1893
+msgid ""
+"List of inline CSS rules for this zone in format <code>margin: 0 auto; "
+"border: 1px solid black;</code>."
+msgstr ""
+
+#: ../monetize.php:2081
+msgid "Zone"
+msgstr ""
+
+#: ../monetize.php:2098
+msgid "Zone where you want this unit to appear."
+msgstr ""
+
+#: ../monetize.php:2103
+msgid "Owner"
+msgstr ""
+
+#: ../monetize.php:2115
+msgid "Client who paid for this unit."
+msgstr ""
+
+#: ../monetize.php:2125
+msgid "Unit name to help identify it later."
+msgstr ""
+
+#: ../monetize.php:2135
+msgid "Amount of money client paid for this unit."
+msgstr ""
+
+#: ../monetize.php:2145
+msgid "Cost per 1000 impressions for this unit."
+msgstr ""
+
+#: ../monetize.php:2150
+msgid "Mode"
+msgstr ""
+
+#: ../monetize.php:2153
+msgid "Auto"
+msgstr ""
+
+#: ../monetize.php:2155
+msgid "Unit will stop appearing when it reaches limit."
+msgstr ""
+
+#: ../monetize.php:2156
+msgid "Force activated"
+msgstr ""
+
+#: ../monetize.php:2158
+msgid "Unit will appear even when limit has been reached."
+msgstr ""
+
+#: ../monetize.php:2159
+msgid "Force deactivated"
+msgstr ""
+
+#: ../monetize.php:2161
+msgid "Unit will not appear even when limit hasn't been reached."
+msgstr ""
+
+#: ../monetize.php:2169
+msgid "Add Media"
+msgstr ""
+
+#: ../monetize.php:2175
+msgid "HTML"
+msgstr ""
+
+#: ../monetize.php:2180
+msgid "HTML code rendered where you place this unit."
+msgstr ""
+
+#: ../class-monetize-impressions-list-table.php:268
+#: ../class-monetize-zones-list-table.php:200
+#: ../class-monetize-units-list-table.php:258
+#: ../class-monetize-clicks-list-table.php:268
+msgid "Start:"
+msgstr ""
+
+#: ../class-monetize-impressions-list-table.php:274
+#: ../class-monetize-zones-list-table.php:206
+#: ../class-monetize-units-list-table.php:264
+#: ../class-monetize-clicks-list-table.php:274
+msgid "End:"
+msgstr ""
+
+#: ../class-monetize-impressions-list-table.php:281
+#: ../class-monetize-clicks-list-table.php:281
+msgid "Unit Owner:"
+msgstr ""
+
+#: ../class-monetize-impressions-list-table.php:296
+#: ../class-monetize-zones-list-table.php:212
+#: ../class-monetize-units-list-table.php:286
+#: ../class-monetize-clicks-list-table.php:296
+msgid "Filter"
+msgstr ""
+
+#: ../class-monetize-units-list-table.php:271
+msgid "Owner:"
+msgstr ""
