@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Monetize
-Plugin URI: http://www.techytalk.info/
+Plugin URI: http://www.techytalk.info/wordpress/monetize/
 Description: Monetize units and impressions.
-Version: 1.01
+Version: 1.02
 Author: Marko Martinović
 Author URI: http://www.techytalk.info
 License: GPLv2 or later
 */
 
 class Monetize {
-    const version = '1.01';
+    const version = '1.02';
     const default_db_version = 9;
     const jquery_ui_timepicker_version = '1.4';
     const jquery_swfobject_version = '1.1.1';
