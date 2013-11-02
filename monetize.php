@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Monetize
-Plugin URI: http://www.techytalk.info/wordpress/monetize/
+Plugin URL: http://www.techytalk.info/wordpress/monetize/
 Description: Monetize units and impressions.
-Version: 1.02
+Version: 1.03
 Author: Marko Martinović
-Author URI: http://www.techytalk.info
+Author URL: http://www.techytalk.info
 License: GPLv2 or later
 */
 
 class Monetize {
-    const version = '1.02';
+    const version = '1.03';
     const default_db_version = 9;
     const jquery_ui_timepicker_version = '1.4';
     const jquery_swfobject_version = '1.1.1';
@@ -21,6 +21,12 @@ class Monetize {
     const client_role = 'monetize_client';
 
     const lc_monetary = 'en_US.UTF-8';
+
+    const link = 'http://www.techytalk.info/wordpress/monetize/';
+    const donate_link = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CZQW2VZNHMGGN';
+    const support_link = 'http://www.techytalk.info/wordpress/monetize/';
+    const faq_link = 'http://www.techytalk.info/wordpress/monetize/';
+    const changelog_link = 'http://www.techytalk.info/wordpress/monetize/';
 
     protected $url;
     protected $path;
@@ -52,11 +58,17 @@ class Monetize {
         // Backend style
         add_action('admin_print_styles', array($this, 'admin_styles'));
 
+        // Frontend style
+        add_action('wp_print_styles', array($this, 'style'));
+
         // Backend Javascript
         add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
 
         // Frontend Javascript
         add_action('wp_enqueue_scripts', array($this, 'scripts'));
+
+        // Plugin row links
+        add_filter('plugin_row_meta', array($this, 'plugin_meta'), 10, 2);
 
         // Activation Hooks
         register_activation_hook(__FILE__, array($this, 'add_role'));
@@ -70,19 +82,32 @@ class Monetize {
         // Icons
         add_action('admin_head', array($this, 'custom_post_type_icons'));
 
+        // Add swf to media uploader allowed file types
         add_filter('upload_mimes', array($this, 'allowed_mime_types'));
-        
+
         // Ajax handlers
         add_action( 'wp_ajax_nopriv_monetize-ajax-fetch', array($this, 'ajax_fetch_handler'));
         add_action( 'wp_ajax_monetize-ajax-fetch', array($this, 'ajax_fetch_handler'));
         add_action( 'wp_ajax_nopriv_monetize-ajax-click', array($this, 'ajax_click_handler'));
         add_action( 'wp_ajax_monetize-ajax-click', array($this, 'ajax_click_handler'));
     }
-    
+
+    public function style() {
+        $suffix = (isset($this->options['debug_mode']) ||
+        (defined('WP_DEBUG') && WP_DEBUG)) ? '.dev' : '';
+
+        $style_url = $this->url . '/css/monetize'.$suffix.'.css';
+        $my_style_file = $this->path . '/css/monetize'.$suffix.'.css';;
+
+        if (file_exists($my_style_file)) {
+            wp_enqueue_style('monetize_style_sheet', $style_url);
+        }
+    }
+
     public function allowed_mime_types($mime_types) {
         return array_merge($mime_types, array('swf' => 'application/x-shockwave-flash'));
     }
-    
+
     function custom_post_type_icons() {
     ?>
     <style type="text/css" media="screen">
@@ -182,14 +207,14 @@ class Monetize {
                 self::version,
                 true
             );
-            
+
             wp_localize_script(
                 'monetize-flash',
                 'monetize_flash',
                 array()
-            );            
+            );
         }
-        
+
         if (file_exists($this->path . '/js/monetize-click'.$suffix.'.js')) {
             wp_enqueue_script(
                 'monetize-click',
@@ -198,7 +223,7 @@ class Monetize {
                 self::version,
                 true
             );
-            
+
             wp_localize_script(
                 'monetize-click',
                 'monetize_click',
@@ -206,11 +231,11 @@ class Monetize {
                     'ajaxurl' => admin_url(
                         'admin-ajax.php',
                         (is_ssl() ? 'https' : 'http')
-                    )                    
+                    )
                 )
-            );            
-        }              
-        
+            );
+        }
+
         if (file_exists($this->path . '/js/monetize'.$suffix.'.js')) {
             wp_enqueue_script(
                 'monetize',
@@ -243,7 +268,7 @@ class Monetize {
         if(isset($_POST['data']) && is_array($_POST['data']) &&
                 isset($_POST['data']['impression_id'])) {
             $impression_id = stripslashes($_POST['data']['impression_id']);
-            if(($click_id = $this->new_click($impression_id)) !== false){
+            if(($click_id = $this->new_click($impression_id)) !== false) {
                 $response = $click_id;
             }
         }
@@ -278,9 +303,9 @@ class Monetize {
             foreach ($zones as $zone_id) {
                 $unit = $this->get_random_unit($zone_id);
 
-                if(isset($unit) && is_array($unit) && isset($unit['unit_html'])){
+                if(isset($unit) && is_array($unit) && isset($unit['unit_html'])) {
                     if(($impression_id = $this->new_impression(
-                            $unit['unit_id'], $url, $referer)) !== false){
+                            $unit['unit_id'], $url, $referer)) !== false) {
                         $response[$zone_id] = array(
                             'impression_id' => stripslashes($impression_id),
                             'unit_html' => stripslashes($unit['unit_html']),
@@ -309,7 +334,7 @@ class Monetize {
 
         $count = 0;
         foreach($menu as $section) {
-            if($section[2] == $slug){
+            if($section[2] == $slug) {
                 if($mode == 'after')
                     $count++;
 
@@ -319,7 +344,7 @@ class Monetize {
 
                 // Part of the menu after target
                 $after = array_slice($menu, $count, null, true);
-                foreach ($after as $aoffset => $asection){
+                foreach ($after as $aoffset => $asection) {
                     $new_menu[$aoffset+1] = $asection;
                 }
                 // Overwrite old menu
@@ -336,16 +361,16 @@ class Monetize {
             return;
 
         global $current_screen;
-        if(
-            $current_screen->base != 'toplevel_page_monetize-clicks' &&
-            $current_screen->base != 'toplevel_page_monetize-impressions' &&
-            $current_screen->base != 'toplevel_page_monetize-zones' &&
-            $current_screen->base != 'toplevel_page_monetize-units' &&
-            $current_screen->base != 'units_page_monetize-units-new' &&
-            $current_screen->base != 'impressions_page_monetize-impressions-trends' &&
-            $current_screen->base != 'clicks_page_monetize-clicks-trends')
-        return;
-
+        if (
+                $current_screen->base != 'toplevel_page_monetize-clicks' &&
+                $current_screen->base != 'toplevel_page_monetize-impressions' &&
+                $current_screen->base != 'toplevel_page_monetize-zones' &&
+                $current_screen->base != 'toplevel_page_monetize-units' &&
+                $current_screen->base != 'units_page_monetize-units-new' &&
+                $current_screen->base != 'impressions_page_monetize-impressions-trends' &&
+                $current_screen->base != 'clicks_page_monetize-clicks-trends') {
+            return;
+        }
 
         $suffix = (isset($this->options['debug_mode']) ||
                 (defined('WP_DEBUG') && WP_DEBUG)) ? '.dev' : '';
@@ -357,7 +382,7 @@ class Monetize {
             ($current_screen->base == 'toplevel_page_monetize-units' &&
                 !isset($_GET['monetize-unit-id'])) ||
             $current_screen->base == 'impressions_page_monetize-impressions-trends' ||
-            $current_screen->base == 'clicks_page_monetize-clicks-trends'){
+            $current_screen->base == 'clicks_page_monetize-clicks-trends') {
             global $wp_scripts;
 
             // jQuery UI style
@@ -376,7 +401,7 @@ class Monetize {
         }
     }
 
-    public function admin_scripts($hook){
+    public function admin_scripts($hook) {
         // Only authors and clients need the Javascript
         if(!current_user_can(self::client_cap))
             return;
@@ -579,39 +604,58 @@ class Monetize {
         }
     }
 
-    public function show_zone($zone_id){
-        if(isset($zone_id) && is_numeric($zone_id)){
+    public function show_zone($zone_id) {
+        if(isset($zone_id) && is_numeric($zone_id)) {
             if(defined('WP_CACHE') && WP_CACHE && !is_user_logged_in()) {
 ?>
 <div class="monetize-zone" data-monetize-zone-id="<?php echo $zone_id; ?>"></div>
-<?php                
+<?php
+                if(!isset($this->options['hide_linkhome'])) {
+?>
+<div class="monetize-linkhome">
+    <a href="<?php echo self::link; ?>" target="_blank">
+        <?php echo __('Powered by Monetize', 'monetize') ?>
+    </a>
+</div>
+<?php
+                }
             } else {
                 $unit = $this->get_random_unit($zone_id);
 
-                if(isset($unit) && is_array($unit) && isset($unit['unit_html'])){
+                if(isset($unit) && is_array($unit) && isset($unit['unit_html'])) {
                     $ip_data = $this->get_ip_data();
-                    
+
                     if(($impression_id = $this->new_impression(
-                        $unit['unit_id'], $ip_data['url'], $ip_data['referer'])) !== false){
+                        $unit['unit_id'], $ip_data['url'], $ip_data['referer'])) !== false) {
                             $unit_html = stripslashes($unit['unit_html']);
                             $zone_width = stripslashes($unit['zone_width']);
                             $zone_height = stripslashes($unit['zone_height']);
                             $zone_css = stripslashes($unit['zone_css']);
 ?>
 <div class="monetize-zone"
-     data-monetize-zone-id="<?php echo $zone_id; ?>" 
-     data-monetize-impression-id="<?php echo $impression_id; ?>" 
+     data-monetize-zone-id="<?php echo $zone_id; ?>"
+     data-monetize-impression-id="<?php echo $impression_id; ?>"
      style="<?php echo 'width:'.$zone_width.'px;'.'height:'.$zone_height.'px;'.$zone_css; ?>">
     <?php echo $unit_html; ?>
 </div>
-<?php                        
+<?php
+
+                        if(!isset($this->options['hide_linkhome'])) {
+?>
+<div class="monetize-linkhome">
+    <a href="<?php echo self::link; ?>" target="_blank">
+        <?php echo __('Powered by Monetize', 'monetize') ?>
+    </a>
+</div>
+<?php
+                        }
                     }
-                }                    
+                }
             }
         }
     }
 
-    public function delete_impressions($ids){
+    public function delete_impressions($ids) {
         global $wpdb;
 
         $impressions_table_name = $wpdb->prefix . 'monetize_impressions';
@@ -621,10 +665,10 @@ class Monetize {
         else
             $ids = esc_sql($ids);
 
-        if (!empty($ids)){
+        if (!empty($ids)) {
             $wpdb->query('DELETE FROM '.$impressions_table_name.' WHERE impression_id IN('.$ids.')');
         }
-    }    
+    }
 
     public function get_impressions(
             $start_timestamp = 0,
@@ -683,7 +727,7 @@ class Monetize {
     public function get_impressions_count(
             $start_timestamp = 0,
             $end_timestamp = 2147483647,
-            $unit_user_id = null){
+            $unit_user_id = null) {
         global $wpdb;
 
         $wpdb->flush();
@@ -714,7 +758,7 @@ class Monetize {
         return $count;
     }
 
-    public function delete_clicks($ids){
+    public function delete_clicks($ids) {
         global $wpdb;
 
         $clicks_table_name = $wpdb->prefix . 'monetize_clicks';
@@ -724,7 +768,7 @@ class Monetize {
         else
             $ids = esc_sql($ids);
 
-        if (!empty($ids)){
+        if (!empty($ids)) {
             $wpdb->query('DELETE FROM '.$clicks_table_name.' WHERE click_id IN('.$ids.')');
         }
     }
@@ -789,7 +833,7 @@ class Monetize {
     public function get_clicks_count(
             $start_timestamp = 0,
             $end_timestamp = 2147483647,
-            $unit_user_id = null){
+            $unit_user_id = null) {
         global $wpdb;
 
         $wpdb->flush();
@@ -823,7 +867,7 @@ class Monetize {
         return $count;
     }
 
-    public function delete_units($ids){
+    public function delete_units($ids) {
         global $wpdb;
 
         $units_table_name = $wpdb->prefix . 'monetize_units';
@@ -833,7 +877,7 @@ class Monetize {
         else
             $ids = esc_sql($ids);
 
-        if (!empty($ids)){
+        if (!empty($ids)) {
             $wpdb->query('DELETE FROM '.$units_table_name.' WHERE unit_id IN('.$ids.')');
         }
     }
@@ -845,7 +889,7 @@ class Monetize {
             $order = 'DESC',
             $start = 0,
             $offset = '18446744073709551615',
-            $unit_user_id = null){
+            $unit_user_id = null) {
         global $wpdb;
 
         $wpdb->flush();
@@ -936,7 +980,7 @@ class Monetize {
         return $count;
     }
 
-    public function delete_zones($ids){
+    public function delete_zones($ids) {
         global $wpdb;
 
         $zones_table_name = $wpdb->prefix . 'monetize_zones';
@@ -946,7 +990,7 @@ class Monetize {
         else
             $ids = esc_sql($ids);
 
-        if (!empty($ids)){
+        if (!empty($ids)) {
             $wpdb->query('DELETE FROM '.$zones_table_name.' WHERE zone_id IN('.$ids.')');
         }
     }
@@ -958,7 +1002,7 @@ class Monetize {
             $order = 'DESC',
             $start = 0,
             $offset = '18446744073709551615'
-            ){
+            ) {
         global $wpdb;
 
         $wpdb->flush();
@@ -996,7 +1040,7 @@ class Monetize {
         return $zones;
     }
 
-    public function get_zones_count($start_timestamp = 0, $end_timestamp = 2147483647){
+    public function get_zones_count($start_timestamp = 0, $end_timestamp = 2147483647) {
         global $wpdb;
 
         $wpdb->flush();
@@ -1023,7 +1067,7 @@ class Monetize {
     public function get_impressions_trends(
             $start_timestamp = 0,
             $end_timestamp = 2147483647,
-            $unit_user_id = null){
+            $unit_user_id = null) {
         global $wpdb;
 
         $impressions_table_name = $wpdb->prefix . 'monetize_impressions';
@@ -1066,7 +1110,7 @@ class Monetize {
     public function get_clicks_trends(
             $start_timestamp = 0,
             $end_timestamp = 2147483647,
-            $unit_user_id = null){
+            $unit_user_id = null) {
         global $wpdb;
 
         $clicks_table_name = $wpdb->prefix . 'monetize_clicks';
@@ -1134,8 +1178,8 @@ class Monetize {
 
     }
 
-    public function all_zones_html(){
-        if(isset($_GET['monetize-zone-id']) && is_numeric($_GET['monetize-zone-id'])){
+    public function all_zones_html() {
+        if(isset($_GET['monetize-zone-id']) && is_numeric($_GET['monetize-zone-id'])) {
             // Edit
             global $wpdb;
             $zone_id = $_GET['monetize-zone-id'];
@@ -1221,7 +1265,7 @@ class Monetize {
 <?php
     }
 
-    public function all_impressions_html(){
+    public function all_impressions_html() {
 ?>
 <div class="wrap">
     <h2><?php _e('Impressions', 'monetize'); ?></h2>
@@ -1238,7 +1282,7 @@ class Monetize {
 <?php
     }
 
-    public function all_clicks_html(){
+    public function all_clicks_html() {
 ?>
 <div class="wrap">
     <h2><?php _e('Clicks', 'monetize'); ?></h2>
@@ -1255,7 +1299,7 @@ class Monetize {
 <?php
     }
 
-    public function all_units_html(){
+    public function all_units_html() {
         if(current_user_can(self::admin_cap) &&
                 isset($_GET['monetize-unit-id']) &&
                 is_numeric($_GET['monetize-unit-id'])) {
@@ -1334,16 +1378,16 @@ class Monetize {
         }
     }
 
-    public function text_domain(){
+    public function text_domain() {
         load_plugin_textdomain('monetize', false, dirname($this->basename) . '/languages/');
     }
 
-    public function add_options_page(){
+    public function add_options_page() {
         add_options_page('Monetize', 'Monetize', self::admin_cap, __FILE__, array($this, 'options_page'));
         add_filter('plugin_action_links', array($this, 'action_links'), 10, 2);
     }
 
-    public function action_links($links, $file){
+    public function action_links($links, $file) {
         if ($file == $this->basename) {
             $settings_link = '<a href="' . get_admin_url(null, 'admin.php?page='.$this->basename) . '">'.__('Settings', 'monetize').'</a>';
             $links[] = $settings_link;
@@ -1352,7 +1396,17 @@ class Monetize {
         return $links;
     }
 
-    public function options_page(){
+    public function plugin_meta($links, $file) {
+        if ($file == $this->basename) {
+            return array_merge(
+                $links,
+                array( '<a href="'.self::donate_link.'">'.__('Donate', 'quick-chat').'</a>' )
+            );
+        }
+        return $links;
+    }
+
+    public function options_page() {
 ?>
     <div class="wrap">
         <div class="icon32" id="icon-options-general"><br></div>
@@ -1368,23 +1422,82 @@ class Monetize {
 <?php
     }
 
-    public function settings_init(){
+    public function settings_init() {
         register_setting('monetize_options', 'monetize_options', array($this, 'options_validate'));
 
+        add_settings_section('donate_section', __('Donating', 'monetize'), array($this, 'settings_section_donate'), __FILE__);
+        add_settings_section('version_section', __('Version information', 'monetize'), array($this, 'settings_section_version'), __FILE__);
         add_settings_section('general_section', __('General options:', 'monetize'), array($this, 'settings_section_general'), __FILE__);
+        add_settings_section('appearance_section', __('Appearance options','monetize'), array($this, 'settings_section_appearance'), __FILE__);
+
+        add_settings_field('monetize_paypal', __('Donate using PayPal (sincere thank you for your help):', 'monetize'), array($this, 'settings_field_paypal'), __FILE__, 'donate_section');
+        add_settings_field('monetize_version', __('Monetize version:', 'monetize'), array($this, 'settings_field_version'), __FILE__, 'version_section');
+        add_settings_field('monetize_faq', __('Monetize FAQ:', 'monetize'), array($this, 'settings_field_faq'), __FILE__, 'version_section');
+        add_settings_field('monetize_changelog', __('Monetize changelog:', 'monetize'), array($this, 'settings_field_changelog'), __FILE__, 'version_section');
+        add_settings_field('monetize_support_page', __('Monetize support page:', 'monetize'), array($this, 'settings_field_support_page'), __FILE__, 'version_section');
 
         add_settings_field('monetize_debug_mode', __('Debug mode (enable only when debugging):', 'monetize'), array($this, 'settings_field_debug_mode'), __FILE__, 'general_section');
+
+        add_settings_field('monetize_hide_linkhome', __('Hide "Powered by Monetize" link (big thanks for not hiding it):', 'monetize'), array($this, 'settings_field_hide_linkhome'), __FILE__, 'appearance_section');
     }
 
-    public function settings_section_general(){ }
+    public function settings_section_donate() {
+        echo '<p>';
+        echo __('If you find Monetize useful you can donate to help it\'s development:', 'monetize');
+        echo '</p>';
+    }
 
-    public function settings_field_debug_mode(){
+    public function settings_section_version() {
+        echo '<p>';
+        echo __('Here you can review version information:', 'monetize');
+        echo '</p>';
+    }
+
+    public function settings_section_general() {
+        echo '<p>';
+        echo __('Here you can control all general options:', 'monetize');
+        echo '</p>';
+    }
+
+    public function settings_section_appearance() {
+        echo '<p>';
+        echo __('Here you can control all appearance options:', 'monetize');
+        echo '</p>';
+    }
+
+    public function settings_field_debug_mode() {
         echo '<input id="monetize_debug_mode" name="monetize_options[debug_mode]" type="checkbox" value="1" ';
         if(isset($this->options['debug_mode'])) echo 'checked="checked"';
         echo '/>';
     }
 
-    public function numeric_to_currency($number, $sign = true){
+    public function settings_field_hide_linkhome() {
+        echo '<input id="monetize_hide_linkhome" name="monetize_options[hide_linkhome]" type="checkbox" value="1" ';
+        if(isset($this->options['hide_linkhome'])) echo 'checked="checked"';
+        echo '/>';
+    }
+
+    public function settings_field_faq() {
+        echo '<a href="'.self::faq_link.'" target="_blank">'.__('FAQ', 'monetize').'</a>';
+    }
+
+    public function settings_field_version() {
+        echo self::version;
+    }
+
+    public function settings_field_changelog() {
+        echo '<a href="'.self::changelog_link.'" target="_blank">'.__('Changelog', 'monetize').'</a>';
+    }
+
+    public function settings_field_support_page() {
+        echo '<a href="'.self::support_link.'" target="_blank">'.__('Monetize at TechyTalk.info', 'monetize').'</a>';
+    }
+
+    public function settings_field_paypal() {
+        echo '<a href="'.self::donate_link.'" target="_blank"><img src="'.$this->url.'/img/paypal.gif" /></a>';
+    }
+
+    public function numeric_to_currency($number, $sign = true) {
         $number = round($number, 2);
 
         if($sign == true)
@@ -1393,13 +1506,13 @@ class Monetize {
             return $number;
     }
 
-    public function pixels_to_numeric($pixels){
+    public function pixels_to_numeric($pixels) {
         $pixels = preg_replace('/[^0-9]/', '', $pixels);
 
         return intval($pixels);
     }
 
-    public function numeric_to_pixels($number, $sign = true){
+    public function numeric_to_pixels($number, $sign = true) {
         $number = intval($number);
 
         if($sign == true)
@@ -1408,18 +1521,18 @@ class Monetize {
             return $number;
     }
 
-    public function currency_to_numeric($currency){
+    public function currency_to_numeric($currency) {
         $currency = preg_replace('/([^0-9\\.\\-])/i', '', $currency);
 
         return round($currency, 2);
     }
 
-    protected function new_impression($unit_id, $url = null, $referer = null){
+    protected function new_impression($unit_id, $url = null, $referer = null) {
         global $wpdb;
 
         $impressions_table_name = $wpdb->prefix . 'monetize_impressions';
 
-        if(empty($_SERVER['HTTP_X_FORWARD_FOR'])){
+        if(empty($_SERVER['HTTP_X_FORWARD_FOR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         }  else {
             $ip = $_SERVER['HTTP_X_FORWARD_FOR'];
@@ -1462,7 +1575,7 @@ class Monetize {
         }
     }
 
-    protected function new_click($impression_id){
+    protected function new_click($impression_id) {
         global $wpdb;
 
         $clicks_table_name = $wpdb->prefix . 'monetize_clicks';
@@ -1482,7 +1595,7 @@ class Monetize {
         }
     }
 
-    protected function new_edit_unit($values, $unit_id = null){
+    protected function new_edit_unit($values, $unit_id = null) {
         global $wpdb;
 
         $units_table_name = $wpdb->prefix . 'monetize_units';
@@ -1630,7 +1743,7 @@ class Monetize {
         foreach ($wp_roles as $role_name => $role_data) {
             if(!empty($role_data['capabilities'][self::admin_cap]) ||
                 !empty($role_data['capabilities'][self::client_cap])) {
-                if(!isset($search_fors[$role_name])){
+                if(!isset($search_fors[$role_name])) {
                     $search_fors[] = $role_name;
                 }
             }
@@ -1664,8 +1777,8 @@ class Monetize {
 
     protected function get_ip_data() {
         if(empty($this->ip_data)) {
-            if(!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URI'])) {
-                $this->ip_data['url'] = (is_ssl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+            if(!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URL'])) {
+                $this->ip_data['url'] = (is_ssl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URL'];
             } else {
                 $this->ip_data['url'] = null;
             }
@@ -1680,19 +1793,19 @@ class Monetize {
         return $this->ip_data;
     }
 
-    protected function notices_html($notices){
+    protected function notices_html($notices) {
         $errors = array();
         $updates = array();
 
         foreach ($notices as $notice) {
-            if($notice['class'] == 'error'){
+            if($notice['class'] == 'error') {
                 $errors[] = $notice['message'];
-            }else if($notice['class'] == 'updated'){
+            }else if($notice['class'] == 'updated') {
                 $updates[] = $notice['message'];
             }
         }
 
-        if(!empty($errors)){
+        if(!empty($errors)) {
             echo '<div class="error">';
             foreach ($errors as $error) {
                 echo '<p>'.$error.'</p>';
@@ -1700,7 +1813,7 @@ class Monetize {
             echo '</div>';
         }
 
-        if(!empty($updates)){
+        if(!empty($updates)) {
             echo '<div class="updated">';
             foreach ($updates as $update) {
                 echo '<p>'.$update.'</p>';
@@ -1709,7 +1822,7 @@ class Monetize {
         }
     }
 
-    protected function edit_unit_404_html($notices){
+    protected function edit_unit_404_html($notices) {
 ?>
 <div class="wrap">
     <h2><?php _e('Edit Unit', 'monetize'); ?></h2>
@@ -1718,7 +1831,7 @@ class Monetize {
 <?php
     }
 
-    protected function edit_zone_404_html($notices){
+    protected function edit_zone_404_html($notices) {
 ?>
 <div class="wrap">
     <h2><?php _e('Edit Zone', 'monetize'); ?></h2>
@@ -1745,7 +1858,7 @@ class Monetize {
 
         $notices = array();
 
-        if(isset($_POST['monetize-zone-name'])){
+        if(isset($_POST['monetize-zone-name'])) {
             $zone_name = stripslashes(trim($_POST['monetize-zone-name']));
 
             $zone_width = stripslashes(trim($_POST['monetize-zone-width']));
@@ -1814,9 +1927,9 @@ class Monetize {
 
                 if ($zone_width == '' || $zone_width_numeric <= 0 || $zone_width_numeric >= 10000) {
                     $values['zone_width'] = $zone_width;
-                    if ($zone_width  == ''){
+                    if ($zone_width  == '') {
                         $notices[] = array('class' => 'error', 'message' => __('Please enter a zone width.', 'monetize'));
-                    }else if ($zone_width_numeric <= 0){
+                    }else if ($zone_width_numeric <= 0) {
                         $notices[] = array('class' => 'error', 'message' => __('Zone width must be positive and numeric.', 'monetize'));
                     }elseif ($zone_width_numeric >= 10000) {
                         $notices[] = array('class' => 'error', 'message' => __('Zone width must be less than 10000.', 'monetize'));
@@ -1825,9 +1938,9 @@ class Monetize {
 
                 if ($zone_height == '' || $zone_height_numeric <= 0 || $zone_height_numeric >= 10000) {
                     $values['zone_height'] = $zone_height;
-                    if ($zone_height  == ''){
+                    if ($zone_height  == '') {
                         $notices[] = array('class' => 'error', 'message' => __('Please enter a zone height.', 'monetize'));
-                    }else if ($zone_height_numeric <= 0){
+                    }else if ($zone_height_numeric <= 0) {
                         $notices[] = array('class' => 'error', 'message' => __('Zone height must be positive and numeric.', 'monetize'));
                     }elseif ($zone_height_numeric >= 10000) {
                         $notices[] = array('class' => 'error', 'message' => __('Zone height must be less than 10000.', 'monetize'));
@@ -1929,7 +2042,7 @@ class Monetize {
             isset($_POST['monetize-unit-cpm']) &&
             isset($_POST['monetize-unit-html']) &&
             isset($_POST['monetize-unit-zone-id']) &&
-            isset($_POST['monetize-unit-user-id'])){
+            isset($_POST['monetize-unit-user-id'])) {
 
             $unit_zone_id = $_POST['monetize-unit-zone-id'];
             $unit_user_id = $_POST['monetize-unit-user-id'];
@@ -1966,7 +2079,7 @@ class Monetize {
                         'unit_zone_id' => $unit_zone_id,
                         'unit_user_id' => $unit_user_id,
                         'unit_mode' => $unit_mode
-                    ), $edit_unit_id)) === false){
+                    ), $edit_unit_id)) === false) {
                     if($mode === 'new') {
                         $notices[] = array('class' => 'error', 'message' => __('Could not create unit.', 'monetize'));
                     } else {
@@ -2011,34 +2124,34 @@ class Monetize {
                     'unit_mode' => $unit_mode
                 );
 
-                if ($unit_zone_id < 1 ){
+                if ($unit_zone_id < 1 ) {
                     $notices[] = array('class' => 'error', 'message' => __('Please select owner.', 'monetize'));
                 }
 
-                if ($unit_zone_id < 1 ){
+                if ($unit_zone_id < 1 ) {
                     $notices[] = array('class' => 'error', 'message' => __('Please select zone.', 'monetize'));
                 }
 
-                if ($unit_name == '' ){
+                if ($unit_name == '' ) {
                     $notices[] = array('class' => 'error', 'message' =>__('Please enter a unit name.', 'monetize'));
                 }
 
-                if($unit_price  == '' || $unit_price_numeric <= 0 || $unit_price_numeric >= 100000000){
+                if($unit_price  == '' || $unit_price_numeric <= 0 || $unit_price_numeric >= 100000000) {
                     $values['unit_price'] = $unit_price;
-                    if ($unit_price  == ''){
+                    if ($unit_price  == '') {
                         $notices[] = array('class' => 'error', 'message' => __('Please enter a unit price.', 'monetize'));
-                    }else if ($unit_price_numeric <= 0){
+                    }else if ($unit_price_numeric <= 0) {
                         $notices[] = array('class' => 'error', 'message' => __('Unit price must be positive and numeric.', 'monetize'));
                     }elseif ($unit_price_numeric >= 100000000) {
                         $notices[] = array('class' => 'error', 'message' => __('Unit price must be less than 100000000.', 'monetize'));
                     }
                 }
 
-                if($unit_cpm  == '' || $unit_cpm_numeric <= 0 || $unit_cpm_numeric >= 100000000){
+                if($unit_cpm  == '' || $unit_cpm_numeric <= 0 || $unit_cpm_numeric >= 100000000) {
                     $values['unit_cpm'] = $unit_cpm;
-                    if ($unit_cpm  == ''){
+                    if ($unit_cpm  == '') {
                         $notices[] = array('class' => 'error', 'message' => __('Please enter a unit cpm.', 'monetize'));
-                    }else if ($unit_cpm_numeric <= 0){
+                    }else if ($unit_cpm_numeric <= 0) {
                         $notices[] = array('class' => 'error', 'message' => __('Unit cpm must be positive and numeric.', 'monetize'));
                     }elseif ($unit_cpm_numeric >= 100000000) {
                         $notices[] = array('class' => 'error', 'message' => __('Unit cpm must be less than 100000000.', 'monetize'));
@@ -2227,7 +2340,7 @@ class Monetize {
         return $stats;
     }
 
-    protected function install(){
+    protected function install() {
         global $wpdb;
 
         // Table names
@@ -2251,7 +2364,7 @@ class Monetize {
 
         $wp_users_enqine = $wpdb->get_var($wp_users_engine_check_sql);
 
-        if($wp_users_enqine && $wp_users_enqine != 'InnoDB'){
+        if($wp_users_enqine && $wp_users_enqine != 'InnoDB') {
             $wp_users_engine_alter = 'ALTER TABLE '.$wpdb->users.' ENGINE = InnoDB';
             $wpdb->query($wp_users_engine_alter);
         }
@@ -2410,15 +2523,15 @@ class Monetize {
         update_option('monetize_db_version', self::default_db_version);
     }
 
-    protected function log($title, $code = null, $message = null){
-        if(isset($this->options['debug_mode']) || (defined('WP_DEBUG') && WP_DEBUG)){
+    protected function log($title, $code = null, $message = null) {
+        if(isset($this->options['debug_mode']) || (defined('WP_DEBUG') && WP_DEBUG)) {
             $log_file_append = '['.gmdate('D, d M Y H:i:s \G\M\T').'] ' . $title;
 
-            if($code !== null){
+            if($code !== null) {
                $log_file_append .= ', code: ' . $code;
             }
 
-            if($message !== null){
+            if($message !== null) {
                $log_file_append .= ', message: ' . $message;
             }
             file_put_contents($this->log_file, $log_file_append . "\n", FILE_APPEND);

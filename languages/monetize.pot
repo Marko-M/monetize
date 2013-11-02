@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Monetize 1.00\n"
-"POT-Creation-Date: 2013-11-01 14:12+0100\n"
-"PO-Revision-Date: 2013-11-01 14:12+0100\n"
+"Project-Id-Version: Monetize 1.03\n"
+"POT-Creation-Date: 2013-11-02 12:13+0100\n"
+"PO-Revision-Date: 2013-11-02 12:13+0100\n"
 "Last-Translator: \n"
 "Language-Team: Marko Martinović\n"
 "MIME-Version: 1.0\n"
@@ -13,135 +13,135 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../monetize.php:1169
+#: ../monetize.php:1213
 msgid "Zones"
 msgstr ""
 
-#: ../monetize.php:1170 ../monetize.php:1295
+#: ../monetize.php:1214 ../monetize.php:1339
 msgid "Add New"
 msgstr ""
 
-#: ../monetize.php:1193
+#: ../monetize.php:1237
 msgid "Impressions Trends"
 msgstr ""
 
-#: ../monetize.php:1210
+#: ../monetize.php:1254
 msgid "Clicks Trends"
 msgstr ""
 
-#: ../monetize.php:1227
+#: ../monetize.php:1271
 msgid "Impressions"
 msgstr ""
 
-#: ../monetize.php:1244
+#: ../monetize.php:1288
 msgid "Clicks"
 msgstr ""
 
-#: ../monetize.php:1293
+#: ../monetize.php:1337
 msgid "Units"
 msgstr ""
 
-#: ../monetize.php:1715
+#: ../monetize.php:1828
 msgid "Edit Unit"
 msgstr ""
 
-#: ../monetize.php:1724
+#: ../monetize.php:1837
 msgid "Edit Zone"
 msgstr ""
 
-#: ../monetize.php:1864 ../monetize.php:2120
+#: ../monetize.php:1977 ../monetize.php:2233
 msgid "Name"
 msgstr ""
 
-#: ../monetize.php:1864 ../monetize.php:1872 ../monetize.php:1880
-#: ../monetize.php:2081 ../monetize.php:2103 ../monetize.php:2120
-#: ../monetize.php:2130 ../monetize.php:2140
+#: ../monetize.php:1977 ../monetize.php:1985 ../monetize.php:1993
+#: ../monetize.php:2194 ../monetize.php:2216 ../monetize.php:2233
+#: ../monetize.php:2243 ../monetize.php:2253
 msgid "required"
 msgstr ""
 
-#: ../monetize.php:1872
+#: ../monetize.php:1985
 msgid "Width in pixels"
 msgstr ""
 
-#: ../monetize.php:1880
+#: ../monetize.php:1993
 msgid "Height in pixels"
 msgstr ""
 
-#: ../monetize.php:1888
+#: ../monetize.php:2001
 msgid "CSS"
 msgstr ""
 
-#: ../monetize.php:1893
+#: ../monetize.php:2006
 msgid ""
 "List of inline CSS rules for this zone in format <code>margin: 0 auto; "
 "border: 1px solid black;</code>."
 msgstr ""
 
-#: ../monetize.php:2081
+#: ../monetize.php:2194
 msgid "Zone"
 msgstr ""
 
-#: ../monetize.php:2098
+#: ../monetize.php:2211
 msgid "Zone where you want this unit to appear."
 msgstr ""
 
-#: ../monetize.php:2103
+#: ../monetize.php:2216
 msgid "Owner"
 msgstr ""
 
-#: ../monetize.php:2115
+#: ../monetize.php:2228
 msgid "Client who paid for this unit."
 msgstr ""
 
-#: ../monetize.php:2125
+#: ../monetize.php:2238
 msgid "Unit name to help identify it later."
 msgstr ""
 
-#: ../monetize.php:2135
+#: ../monetize.php:2248
 msgid "Amount of money client paid for this unit."
 msgstr ""
 
-#: ../monetize.php:2145
+#: ../monetize.php:2258
 msgid "Cost per 1000 impressions for this unit."
 msgstr ""
 
-#: ../monetize.php:2150
+#: ../monetize.php:2263
 msgid "Mode"
 msgstr ""
 
-#: ../monetize.php:2153
+#: ../monetize.php:2266
 msgid "Auto"
 msgstr ""
 
-#: ../monetize.php:2155
+#: ../monetize.php:2268
 msgid "Unit will stop appearing when it reaches limit."
 msgstr ""
 
-#: ../monetize.php:2156
+#: ../monetize.php:2269
 msgid "Force activated"
 msgstr ""
 
-#: ../monetize.php:2158
+#: ../monetize.php:2271
 msgid "Unit will appear even when limit has been reached."
 msgstr ""
 
-#: ../monetize.php:2159
+#: ../monetize.php:2272
 msgid "Force deactivated"
 msgstr ""
 
-#: ../monetize.php:2161
+#: ../monetize.php:2274
 msgid "Unit will not appear even when limit hasn't been reached."
 msgstr ""
 
-#: ../monetize.php:2169
+#: ../monetize.php:2282
 msgid "Add Media"
 msgstr ""
 
-#: ../monetize.php:2175
+#: ../monetize.php:2288
 msgid "HTML"
 msgstr ""
 
-#: ../monetize.php:2180
+#: ../monetize.php:2293
 msgid "HTML code rendered where you place this unit."
 msgstr ""
 

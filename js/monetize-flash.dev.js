@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function($, monetize_flash) {
     monetize_flash = $.extend(monetize_flash || {}, {
         do_flash: function() {

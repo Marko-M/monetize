@@ -28,7 +28,7 @@
 				str = _objectToArguments(obj[i]);
 			}
 			else {
-				str = [i, (ENCODE) ? encodeURI(obj[i]) : obj[i]].join('=');
+				str = [i, (ENCODE) ? encodeURL(obj[i]) : obj[i]].join('=');
 			}
 
 			arr.push(str);

@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function($, monetize_media) {
     monetize_media = $.extend(monetize_media || {}, {
         insert_at_caret: function(el, myValue) {
@@ -88,7 +93,7 @@
 
         // Bind to our click event in order to open up the new media experience.
         $(document.body).on('click', '.monetize-unit-media-open', function(e){
-            // Prevent the default action from occuring.
+            // Prevent the default action from occURLng.
             e.preventDefault();
 
             // If the frame already exists, re-open it.

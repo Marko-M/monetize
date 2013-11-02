@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 jQuery(document).ready(function($){
     $.datepicker.regional['monetize'] = {
             closeText: monetize.i18n.closeText,

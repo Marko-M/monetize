@@ -1359,7 +1359,7 @@
 
 		// don't popup the datepicker if there is another instance already opened
 		var input = inst.input[0];
-		if ($.datepicker._curInst && $.datepicker._curInst !== inst && $.datepicker._datepickerShowing && $.datepicker._lastInput !== input) {
+		if ($.datepicker._cURLnst && $.datepicker._cURLnst !== inst && $.datepicker._datepickerShowing && $.datepicker._lastInput !== input) {
 			return;
 		}
 
@@ -2095,8 +2095,8 @@
 	};
 
 	/**
-	 * Log error or data to the console during error or debugging
-	 * @param  {Object} err pass any type object to log to the console during error or debugging
+	 * Log error or data to the console dURLng error or debugging
+	 * @param  {Object} err pass any type object to log to the console dURLng error or debugging
 	 * @return {void}
 	 */
 	$.timepicker.log = function (err) {
