@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function($, monetize_click) {
     monetize_click = $.extend(monetize_click || {}, {
         hover_impression_id: null,

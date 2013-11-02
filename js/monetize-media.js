@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function(k,c){c=k.extend(c||{},{insert_at_caret:function(a,b){if(document.selection)a.focus(),sel=document.selection.createRange(),sel.text=b,a.focus();else if(a.selectionStart||"0"==a.selectionStart){var g=a.selectionStart,c=a.selectionEnd,e=a.scrollTop;a.value=a.value.substring(0,g)+b+a.value.substring(c,a.value.length);a.focus();a.selectionStart=g+b.length;a.selectionEnd=g+b.length;a.scrollTop=e}else a.value+=b,a.focus()},process_image:function(a){var b=a.alt||"",c=a.caption||"",h=a.title||"",
 e=a.linkUrl||"";a=['<img src="'+(a.url||"")+'" alt="'+(b||c)+'"/>'];e&&(a.unshift('<a href="'+e+'" title="'+(h||b)+'">'),a.push("</a>"));return a},process_swf:function(a){var b=a.linkUrl||"";a=a.url||"";var c=[];b?c.push('<div class="monetize-flash" data-monetize-movie="'+a+'" data-monetize-clicktag="'+b+'&clickTarget=_self">'):c.push('<div class="monetize-flash" data-monetize-movie="'+a+'">');c.push('<a href="http://www.adobe.com/go/getflashplayer">','<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />',
 "</a>","</div>");return c},process_link:function(a){var b=a.url||"";return['<a href="'+(a.linkUrl||""||b)+'">',a.title||"","</a>"]},to_editor:function(a,b){c.insert_at_caret(a,b.join("\n"))}});k(document).ready(function(a){var b;a(document.body).on("click",".monetize-unit-media-open",function(g){g.preventDefault();if(!b){b=wp.media.frames.monetize_media_frame=wp.media({className:"media-frame monetize-unit-media-frame",frame:"post",multiple:!1});var h=wp.media.view.Embed;wp.media.view.Embed=h.extend({refresh:function(){h.prototype.refresh.apply(this,
