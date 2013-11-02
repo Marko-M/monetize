@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function($, monetize_trends) {
     monetize_trends = $.extend(monetize_trends || {}, {
         clicks_chart: function(){

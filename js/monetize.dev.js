@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 (function($, monetize) {
     monetize = $.extend(monetize || {}, {
         get_script: function(url, callback, options) {

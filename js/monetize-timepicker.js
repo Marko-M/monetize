@@ -1,3 +1,8 @@
+/*
+Monetize 1.03
+By: Marko Martinović
+URL: http://www.techytalk.info/wordpress/monetize/
+*/
 jQuery(document).ready(function(a){a.datepicker.regional.monetize={closeText:monetize.i18n.closeText,prevText:monetize.i18n.prevText,nextText:monetize.i18n.nextText,currentText:monetize.i18n.currentText,monthNames:[monetize.i18n.monthNames[0],monetize.i18n.monthNames[1],monetize.i18n.monthNames[2],monetize.i18n.monthNames[3],monetize.i18n.monthNames[4],monetize.i18n.monthNames[5],monetize.i18n.monthNames[6],monetize.i18n.monthNames[7],monetize.i18n.monthNames[8],monetize.i18n.monthNames[9],monetize.i18n.monthNames[10],
 monetize.i18n.monthNames[11]],monthNamesShort:[monetize.i18n.monthNamesShort[0],monetize.i18n.monthNamesShort[1],monetize.i18n.monthNamesShort[2],monetize.i18n.monthNamesShort[3],monetize.i18n.monthNamesShort[4],monetize.i18n.monthNamesShort[5],monetize.i18n.monthNamesShort[6],monetize.i18n.monthNamesShort[7],monetize.i18n.monthNamesShort[8],monetize.i18n.monthNamesShort[9],monetize.i18n.monthNamesShort[10],monetize.i18n.monthNamesShort[11]],dayNames:[monetize.i18n.dayNames[0],monetize.i18n.dayNames[1],
 monetize.i18n.dayNames[2],monetize.i18n.dayNames[3],monetize.i18n.dayNames[4],monetize.i18n.dayNames[5],monetize.i18n.dayNames[6]],dayNamesShort:[monetize.i18n.dayNamesShort[0],monetize.i18n.dayNamesShort[1],monetize.i18n.dayNamesShort[2],monetize.i18n.dayNamesShort[3],monetize.i18n.dayNamesShort[4],monetize.i18n.dayNamesShort[5],monetize.i18n.dayNamesShort[6]],dayNamesMin:[monetize.i18n.dayNamesMin[0],monetize.i18n.dayNamesMin[1],monetize.i18n.dayNamesMin[2],monetize.i18n.dayNamesMin[3],monetize.i18n.dayNamesMin[4],
